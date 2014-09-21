@@ -7,10 +7,10 @@ Gem::Specification.new do |spec|
   spec.name          = "excelgrip"
   spec.version       = Excelgrip::VERSION
   spec.authors       = ["yac4423"]
-  spec.email         = ["yac@tech-notes.dyndns.org"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.email         = ["excelgrip@tech-notes.dyndns.org"]
+  spec.summary       = %q{Control Excel from Ruby Script.}
+  spec.description   = %q{Control Excel from Ruby Script.}
+  spec.homepage      = "https://github.com/yac4423/excelgrip"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
