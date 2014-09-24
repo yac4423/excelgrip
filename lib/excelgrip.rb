@@ -391,7 +391,7 @@ module Excelgrip
     def get_cursor()
       RangeCursor.new(self)
     end
-    alias get_cusol get_cursor  # Compativirity old excel_lib. I missed the spell of "cursor".
+    alias get_cursol get_cursor  # Compativirity old excel_lib. I missed the spell of "cursor".
     
     private
     def operation_finished?(merge_range_array,target_cell)
