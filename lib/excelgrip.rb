@@ -388,8 +388,8 @@ module Excelgrip
       Worksheet.new(@raw_object.parent)
     end
     
-    def get_cursol()
-      RangeCursol.new(self)
+    def get_cursor()
+      RangeCursor.new(self)
     end
     
     
@@ -405,9 +405,9 @@ module Excelgrip
   end
 
   # ===============================================
-  # ============== RangeCursol Class ==============
+  # ============== RangeCursor Class ==============
   # ===============================================
-  class RangeCursol < Range
+  class RangeCursor < Range
     def h_move(offset)
       return(self) if offset == 0
       sheet = @raw_object.parent

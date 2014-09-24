@@ -1,31 +1,174 @@
 # Excelgrip
-
-TODO: Write a gem description
+Excelgrip is Ruby library to handle all Excel classes.
+* Windows Only
+* Necessary Microsoft Excel
 
 ## Installation
+  # gem install excelgrip
 
-Add this line to your application's Gemfile:
+= Usage
+  require 'excelgrip'
+  excel = Excelgrip::Excel.new
+  book = excel.open_book("./sample.xls")
+  sheet = book.sheets(1)
+  puts sheet["A1:B1"].value
+  sheet["A1:B1"].value = ["TEST", "Yap"]
+  
+= Documentation
+In RubyDoc.Info, all Excelgrip classes are listed.
+http://rubydoc.info/gems/excelgrip/
 
-```ruby
-gem 'excelgrip'
-```
+== Excelgrip::GripWrapper
+Base class of all Excelgrip classes. 
+This class wraps a various Excel objects.
+=== Methods
+[raw]
+  Return raw Excel object which is wrapped by Excelgrip object.
 
-And then execute:
+== Excelgrip::Excel class
+Wrap Excel object to get all classes of Excel class library.
+  excel = Excelgrip::Excel.new
+  book = excel.open_book("./sample.xls")  # Workbook
+  sheet = book.sheets(1)                  # Worksheet
+  range = sheet["A1:B1"]                  # Range
+=== Additional Methods
+[open_book(filename)]
+  Open excel file. Return Workbook object. Modify workbook and save it, overwrite the excel file.
+[copy_book(filename)]
+  Open excel file as a template file. Return Workbook object. 
+  If you modify workbook and save,  the excel file is not change.
+[workbooks(index=nil)]
+  Return the workbook object specified by index.
+  When omit index, return Workbooks object.
 
-    $ bundle
+== Excelgrip::Workbooks
+Wrap Workbooks object to to use all properties and methods of Workbooks class.
+[[index]]
+  Return the workbook object specified by index.
+[size]
+  Return count of Workbook objects opened by Excel.
+[each {|workbook| block}]
+  Calls the given block for each Workbook object in Excel.
+    excel.workbooks.each {|book|
+      p book
+    }
 
-Or install it yourself as:
+== Excelgrip::Workbook
+Wrap Workbook object to to use all properties and methods of Workbook class.
+[[sheetname]]
+  Return the worksheet object specified by sheetname in the book.
+[worksheets(index=nil)]
+  Return the worksheet object specified by index.
+  When omit index, return Worksheets object.
+  
+  sheets() is alias of worksheets().
+[add_sheet(source_sheet)]
+  Add new worksheet which is copy of source_sheet.
+[save(filename)]
+  Save the workbook to file.
+[each_sheet {|sheet| block}]
+  Calls the given block for each Worksheet object in the Workbook.
+    book = excel.copy_book("./sample.xls")
+    book.each_sheet {|sheet|
+      p sheet.name
+    }
 
-    $ gem install excelgrip
+=== Excelgrip::Worksheets
+Wrap Worksheets object to to use all properties and methods of Worksheets class.
+[[index]]
+  Return Worksheet object specified by index.
+[size]
+  Return count of Worksheet.
+[each {|worksheet| block}]
+  Calls the given block for each Worksheet object in Worksheets.
+    book.worksheets.each {|book|
+      p book
+    }
+  
 
-## Usage
+== Excelgrip::Worksheet
+Wrap Worksheet object to to use all properties and methods of Worksheet class.
+[range(rangename)]
+  Return Range object specified by rangename.
+    (ex)
+    * sheet.range("A1")
+    * sheet.range("A1:N1")
+    * sheet.range("Title")  # "Title" is a name of cell.
+[range(cell1, cell2)]
+  Return Range object between cell1 and cell2.
+    (ex)
+    cell1=sheet.range("A1")
+    cell2=sheet.range("N1")
+    sheet.range(cell1, cell2)
+[cells(v_pos, h_pos)]
+  Return Range object that location is (v_pos, h_pos). The upper left cell is cells(1, 1).
+[[rangename]]
+  Return Range object specified by rangename.
+    range01 = sheet["A1:N1"]
+[name]
+  Name of this sheet.
 
-TODO: Write usage instructions here
+== Excelgrip::Range
+Wrap Range ojject to use all properties and methods of Range class.
+[value]
+  Return the value of the cell. When this Range object is composed by multi cells, this method return Array of values.
+[text]
+  Alias of value method.
+[value=]
+  Modify value of this cell. When this Range object is composed by multi cells, set Array to modify multi cells at once.
+[name]
+  Return name of this cell or cells.
+[v_pos]
+  Return virtical position of this cell or cells.
+[h_pos]
+  Return horizontal position of this cell or cells.
+[position]
+  Return virtical and horizontal position of this cell or cells.
+[v_size]
+  Return virtical count of cells in the Range.
+[h_size]
+  Return horizontal count of cells in the Range.
+[meage]
+  Meage cells in the Rage.
+[unmeage]
+  Unmeage cells in the Range.
+[meagearea]
+  Returns a Range object that represents the merged range containing the specified cell. 
+[cells(v_pos, h_pos)]
+  Returns a Range object that represents the cells in my range.
+  The upper left cell of my Range is self.cells(1, 1).
+[each_range {|cell| block}]
+  Calls the given block for each sub Range object in my Range.
+    (ex)
+    target_range = sheet["A1:N1"]
+    target_range.each {|cell|
+      p cell.value
+    }
+[==(other_range)]
+  Compare other range object to my range object based on position.
+[include?(other_range)]
+  Check the other range is contained in my range.
+[insert_here(shift)]
+  Copy my Range in the sheet. "shift" specify the direction to move. Excel::XlShiftToRight or Excel::XlShiftDown.
+  When shift is nil, direction is automatically determined.
+[delete(shift)]
+  Delete my Range in the sheet. "shift" specify the direction to move after delete my Range.
+  Excel::XlShiftToRight or Excel::XlShiftDown.
+  When shift is nil, direction is automatically determined.
+[get_cursor]
+  Return RangeCursor ofject of my Range object.
+  
+== Excelgrip::RangeCursor
+Sub Class of Range class. RangeCursor is movable Range.
+[h_move(offset)]
+  Move cell to horizontal direction. Merged cells is counted one cell.
+[v_move(offset)]
+  Move cell to virtical direction. Merged cells is counted one cell.
+[delete(shift)]
+  Delete my Range in the sheet. "shift" specify the direction to move after delete my Range.
+  
+= Author
+notesgrip@tech-notes.dyndns.org
 
-## Contributing
-
-1. Fork it ( https://github.com/[my-github-username]/excelgrip/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+= License
+MIT
