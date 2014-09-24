@@ -1,9 +1,9 @@
-# Excelgrip
+= Excelgrip
 Excelgrip is Ruby library to handle all Excel classes.
 * Windows Only
 * Necessary Microsoft Excel
 
-## Installation
+== Installation
   # gem install excelgrip
 
 = Usage
