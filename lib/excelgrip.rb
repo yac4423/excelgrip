@@ -47,7 +47,6 @@ module Excelgrip
     def quit
       @raw_object.Quit
       @raw_object = nil
-      undef_my_method()
     end
   end
   # ========================================================
@@ -146,7 +145,6 @@ module Excelgrip
     def close
       @raw_object.Close
       @raw_object = nil
-      undef_my_method()
     end
   end
 
@@ -187,7 +185,6 @@ module Excelgrip
     def delete
       @raw_object.delete
       @raw_object = nil
-      undef_my_method()
     end
     
     def name=(sheet_name)
@@ -381,7 +378,6 @@ module Excelgrip
         @raw_object.delete  # Auto Shift
       end
       @raw_object = nil
-      undef_my_method()
     end
     
     def parent
